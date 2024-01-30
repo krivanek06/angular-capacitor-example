@@ -7,7 +7,12 @@
       "projectType": "application",
       "schematics": {
         "@schematics/angular:component": {
-          "style": "scss"
+          "style": "scss",
+          "changeDetection": "OnPush",
+          "displayBlock": true,
+          "standalone": true,
+          "inlineTemplate": true,
+          "inlineStyle": true
         }
       },
       "root": "",
