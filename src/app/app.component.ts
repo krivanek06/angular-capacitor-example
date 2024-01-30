@@ -1,13 +1,15 @@
 import { Component } from '@angular/core';
+import { MatButtonModule } from '@angular/material/button';
 import { RouterOutlet } from '@angular/router';
-
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet],
-  templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  imports: [RouterOutlet, MatButtonModule],
+  template: `
+    <div>
+      <button mat-flat-button color="primary">This is button</button>
+    </div>
+  `,
+  styles: [],
 })
-export class AppComponent {
-  title = 'angular-capacitor-example';
-}
+export class AppComponent {}

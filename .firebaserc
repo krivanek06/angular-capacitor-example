@@ -1,0 +1,14 @@
+{
+  "targets": {
+    "angular-capacitor-example": {
+      "hosting": {
+        "angular-capacitor-example": [
+          "angular-capacitor-example"
+        ]
+      }
+    }
+  },
+  "projects": {
+    "default": "angular-capacitor-example"
+  }
+}
