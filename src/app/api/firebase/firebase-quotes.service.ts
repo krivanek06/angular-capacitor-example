@@ -7,7 +7,7 @@ import { FUQuotesUserData, assignTypesClient } from './data.model';
 @Injectable({
 	providedIn: 'root',
 })
-export class DatabaseService {
+export class FirebaseQuotesService {
 	private firestore = inject(Firestore);
 
 	getQuotesUser(userId: string) {

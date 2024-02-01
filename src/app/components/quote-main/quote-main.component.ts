@@ -2,8 +2,9 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { debounceTime, defer, fromEvent, shareReplay, startWith, switchMap, tap } from 'rxjs';
-import { QuotesApiService } from '../../api';
+import { debounceTime, defer, from, fromEvent, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { FirebaseQuotesService, QuotesApiService } from '../../api';
+import { AuthenticationService } from '../../auth';
 
 @Component({
 	selector: 'app-quote-main',
@@ -16,7 +17,13 @@ import { QuotesApiService } from '../../api';
 			</div>
 
 			<div class="p-3 flex gap-3 justify-between">
-				<button #likeButton mat-stroked-button color="accent" class="w-full md:w-[240px] h-11 rounded-lg">
+				<button
+					#likeButton
+					mat-stroked-button
+					color="accent"
+					class="w-full md:w-[240px] h-11 rounded-lg"
+					[disabled]="!getCurrentUser()"
+				>
 					<mat-icon>favorite</mat-icon>
 					Like
 				</button>
@@ -36,9 +43,13 @@ import { QuotesApiService } from '../../api';
 })
 export class QuoteMainComponent {
 	private quotesApiService = inject(QuotesApiService);
+	private firebaseQuotesService = inject(FirebaseQuotesService);
+	private authenticationService = inject(AuthenticationService);
+
+	getCurrentUser = this.authenticationService.getCurrentUser;
 
 	@ViewChild('nextButton', { static: true, read: ElementRef }) nextButton!: ElementRef<HTMLButtonElement>;
-	@ViewChild('likeButton', { static: true, read: ElementRef }) likeButton!: ElementRef<HTMLButtonElement>;
+	@ViewChild('likeButton', { static: false, read: ElementRef }) likeButton!: ElementRef<HTMLButtonElement>;
 
 	loadedQuote$ = defer(() =>
 		fromEvent(this.nextButton.nativeElement, 'click').pipe(
@@ -49,6 +60,16 @@ export class QuoteMainComponent {
 	);
 
 	likeButtonClick$ = this.loadedQuote$.pipe(
-		switchMap((quote) => fromEvent(this.likeButton.nativeElement, 'click').pipe(tap(() => console.log(quote))))
+		switchMap((quote) =>
+			fromEvent(this.likeButton.nativeElement, 'click').pipe(
+				switchMap(() =>
+					// save to firebase
+					from(this.firebaseQuotesService.likeQuote(this.getCurrentUser()!.uid, quote)).pipe(
+						// move to next tag
+						tap(() => this.nextButton.nativeElement.click())
+					)
+				)
+			)
+		)
 	);
 }
