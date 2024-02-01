@@ -8,7 +8,6 @@ import {
 	signInWithEmailAndPassword,
 	signInWithPopup,
 } from '@angular/fire/auth';
-import { Observable, Subject } from 'rxjs';
 import { LoginUserInput, RegisterUserInput } from './authentication.model';
 
 @Injectable({
@@ -17,25 +16,25 @@ import { LoginUserInput, RegisterUserInput } from './authentication.model';
 export class AuthenticationService {
 	private auth = inject(Auth);
 	private authUserSignal = signal<User | null>(null);
-	private loadedAuthentication$ = new Subject<User['uid'] | null>();
+	//private loadedAuthentication$ = new Subject<User['uid'] | null>();
 
-	isUserNew = computed(
-		() => this.authUserSignal()?.metadata?.creationTime == this.authUserSignal()?.metadata?.lastSignInTime
-	);
+	// isUserNew = computed(
+	// 	() => this.authUserSignal()?.metadata?.creationTime == this.authUserSignal()?.metadata?.lastSignInTime
+	// );
 	getCurrentUser = computed(() => this.authUserSignal());
-	getCurrentUserMust = computed(() => this.authUserSignal()!);
+	//getCurrentUserMust = computed(() => this.authUserSignal()!);
 
 	constructor() {
 		this.auth.onAuthStateChanged((user) => {
 			console.log('Auth change', user);
 			this.authUserSignal.set(user);
-			this.loadedAuthentication$.next(user?.uid ?? null);
+			//this.loadedAuthentication$.next(user?.uid ?? null);
 		});
 	}
 
-	getLoadedAuthentication(): Observable<User['uid'] | null> {
-		return this.loadedAuthentication$.asObservable();
-	}
+	// getLoadedAuthentication(): Observable<User['uid'] | null> {
+	// 	return this.loadedAuthentication$.asObservable();
+	// }
 
 	signIn(input: LoginUserInput): Promise<UserCredential> {
 		return signInWithEmailAndPassword(this.auth, input.email, input.password);
