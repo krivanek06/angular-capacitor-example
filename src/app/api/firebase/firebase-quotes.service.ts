@@ -1,6 +1,7 @@
 import { Injectable, inject } from '@angular/core';
-import { Firestore, arrayUnion, doc, getDoc, setDoc } from '@angular/fire/firestore';
+import { Firestore, doc, getDoc, setDoc } from '@angular/fire/firestore';
 import { docData as rxDocData } from 'rxfire/firestore';
+import { Observable } from 'rxjs';
 import { QuoteData } from '../quotes';
 import { FUQuotesUserData, assignTypesClient } from './data.model';
 
@@ -10,16 +11,18 @@ import { FUQuotesUserData, assignTypesClient } from './data.model';
 export class FirebaseQuotesService {
 	private firestore = inject(Firestore);
 
-	getQuotesUser(userId: string) {
+	getQuotesUser(userId: string): Observable<FUQuotesUserData | undefined> {
 		return rxDocData<FUQuotesUserData>(this.getQuotesUserDocRef(userId));
 	}
 
 	async likeQuote(userId: string, quote: QuoteData) {
+		console.log('save', quote);
 		// load user data
 		const data = await getDoc(this.getQuotesUserDocRef(userId));
+		const existingData = data.data()?.likedQuotes ?? [];
 
 		// check if already liked
-		const isLiked = data.data()?.likedQuotes.find((d) => d._id === quote._id);
+		const isLiked = existingData.find((d) => d._id === quote._id);
 		if (isLiked) {
 			return;
 		}
@@ -28,7 +31,7 @@ export class FirebaseQuotesService {
 		setDoc(
 			this.getQuotesUserDocRef(userId),
 			{
-				likedQuotes: arrayUnion(quote),
+				likedQuotes: [quote, ...existingData],
 			},
 			{ merge: true }
 		);

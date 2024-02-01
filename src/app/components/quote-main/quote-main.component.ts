@@ -2,7 +2,7 @@ import { CommonModule } from '@angular/common';
 import { ChangeDetectionStrategy, Component, ElementRef, ViewChild, inject } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { debounceTime, defer, from, fromEvent, shareReplay, startWith, switchMap, tap } from 'rxjs';
+import { debounceTime, defer, from, fromEvent, share, startWith, switchMap, tap } from 'rxjs';
 import { FirebaseQuotesService, QuotesApiService } from '../../api';
 import { AuthenticationService } from '../../auth';
 
@@ -16,7 +16,7 @@ import { AuthenticationService } from '../../auth';
 				{{ (loadedQuote$ | async)?.content }}
 			</div>
 
-			<div class="p-3 flex gap-3 justify-between">
+			<div class="p-3 flex flex-col-reverse sm:flex-row gap-3 justify-between">
 				<button
 					#likeButton
 					mat-stroked-button
@@ -55,9 +55,9 @@ export class QuoteMainComponent {
 		fromEvent(this.nextButton.nativeElement, 'click').pipe(
 			startWith(null),
 			debounceTime(300),
-			switchMap(() => this.quotesApiService.getRandomQuote().pipe(shareReplay(1)))
+			switchMap(() => this.quotesApiService.getRandomQuote())
 		)
-	);
+	).pipe(share());
 
 	likeButtonClick$ = this.loadedQuote$.pipe(
 		switchMap((quote) =>

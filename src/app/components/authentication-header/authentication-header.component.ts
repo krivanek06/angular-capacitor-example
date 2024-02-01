@@ -14,13 +14,13 @@ import { LoginModalModule } from '../login-modal/login-modal.module';
 	template: `
 		@defer {
 			@if (getCurrentUser()) {
-				<div class="flex items-center justify-between">
+				<div class="flex flex-col sm:flex-row gap-2 items-center justify-between">
 					<div class="flex items-center gap-2 text-xl">
-						<span>Log Is As:</span>
+						<span class="hidden sm:block">Log Is As:</span>
 						<span>{{ getCurrentUser()?.displayName }}</span>
 					</div>
 
-					<button type="button" mat-button color="warn" (click)="onLogOut()">
+					<button type="button" mat-flat-button class="w-full sm:w-auto" color="warn" (click)="onLogOut()">
 						<mat-icon>logout</mat-icon>
 						Log Out
 					</button>
