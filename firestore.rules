@@ -1,0 +1,20 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // Allow users to read and write their own document in the personal-accounts collection
+    match /quotes-user/{userId}/{document=**} {
+      allow read, write: if isOwner(userId);
+    }
+
+    // Deny access to everything else
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+
+
+  function isOwner(userId) {
+    return request.auth != null && request.auth.uid == userId;
+  }
+}
