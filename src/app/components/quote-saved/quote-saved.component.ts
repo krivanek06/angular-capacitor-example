@@ -3,7 +3,7 @@ import { ChangeDetectionStrategy, Component, inject } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { map, of, switchMap } from 'rxjs';
+import { catchError, map, of, retry, switchMap } from 'rxjs';
 import { FirebaseQuotesService, QuoteData } from '../../api';
 import { AuthenticationService } from '../../auth';
 
@@ -38,7 +38,19 @@ export class QuoteSavedComponent {
 	loadedQuotesSignal = toSignal(
 		toObservable(this.authenticationService.getCurrentUser).pipe(
 			switchMap((user) =>
-				!user ? of([]) : this.firebaseQuotesService.getQuotesUser(user.uid).pipe(map((data) => data?.likedQuotes ?? []))
+				!user
+					? of([])
+					: this.firebaseQuotesService.getQuotesUser(user.uid).pipe(
+							map((data) => data?.likedQuotes ?? []),
+							retry({
+								delay: 1000,
+								count: 3,
+							}),
+							catchError((e) => {
+								console.error(e);
+								return of([]);
+							})
+						)
 			)
 		),
 		{ initialValue: [] }

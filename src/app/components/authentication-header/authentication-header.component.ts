@@ -13,11 +13,11 @@ import { LoginModalModule } from '../login-modal/login-modal.module';
 	imports: [CommonModule, LoginModalModule, MatDialogModule, MatButtonModule, MatIconModule],
 	template: `
 		@defer {
-			@if (getCurrentUser()) {
+			@if (getCurrentUser(); as user) {
 				<div class="flex flex-col sm:flex-row gap-2 items-center justify-between">
 					<div class="flex items-center gap-2 text-xl">
 						<span class="hidden sm:block">Log Is As:</span>
-						<span>{{ getCurrentUser()?.displayName }}</span>
+						<span>{{ user?.displayName ?? user.email }}</span>
 					</div>
 
 					<button type="button" mat-flat-button class="w-full sm:w-auto" color="warn" (click)="onLogOut()">

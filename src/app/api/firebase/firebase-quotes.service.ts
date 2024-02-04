@@ -12,6 +12,7 @@ export class FirebaseQuotesService {
 	private firestore = inject(Firestore);
 
 	getQuotesUser(userId: string): Observable<FUQuotesUserData | undefined> {
+		console.log('loading quotes', userId);
 		return rxDocData<FUQuotesUserData>(this.getQuotesUserDocRef(userId));
 	}
 

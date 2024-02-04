@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "735796592806",
+    "project_id": "angular-capacitor-example",
+    "storage_bucket": "angular-capacitor-example.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:735796592806:android:6540170c7828ef2a5eb467",
+        "android_client_info": {
+          "package_name": "angular_capacitor_example.krivaneda.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "735796592806-ve1g3317d04i0q8mpudlav5jeuamqk9t.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "angular_capacitor_example.krivaneda.app",
+            "certificate_hash": "f4c1d6d54fbfa037118518fd8da2ed0c8ce5bec9"
+          }
+        },
+        {
+          "client_id": "735796592806-7tqt2ee6ffvv4gb249js35us71fp5u6e.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyC0sItvfzZxq5cNp1RmDe9MBboMpyUA81E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "735796592806-7tqt2ee6ffvv4gb249js35us71fp5u6e.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

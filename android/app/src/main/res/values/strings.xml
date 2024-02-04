@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Angular Capacitor Example</string>
+    <string name="title_activity_main">Angular Capacitor Example</string>
+    <string name="package_name">angular_capacitor_example.krivaneda.app</string>
+    <string name="custom_url_scheme">angular_capacitor_example.krivaneda.app</string>
+</resources>

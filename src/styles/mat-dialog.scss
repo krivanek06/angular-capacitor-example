@@ -168,3 +168,7 @@ mat-dialog-content {
 .mat-mdc-dialog-actions .mat-mdc-button-base + .mat-mdc-button-base {
 	margin-left: 0px !important;
 }
+
+.cdk-overlay-pane {
+	max-width: 100% !important;
+}
