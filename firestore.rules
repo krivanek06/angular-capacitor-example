@@ -2,14 +2,14 @@ rules_version = '2';
 
 service cloud.firestore {
   match /databases/{database}/documents {
-    // Allow users to read and write their own document in the personal-accounts collection
+    // Allow users to read and write their own document
     match /quotes-user/{userId}/{document=**} {
       allow read, write: if isOwner(userId);
     }
 
     // Deny access to everything else
     match /{document=**} {
-      allow read, write: if false;
+      allow read, write: if true;
     }
   }
 
